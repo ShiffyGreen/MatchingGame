@@ -11,3 +11,6 @@ If they are a match then they get to keep it and go again, otherwise it gets tur
 The player with the most points when there is no more matches wins.
 
 **The full spec for the game is in the repo**
+
+![image](https://github.com/ShiffyGreen/MatchingGame/assets/138054036/5a671f48-4e84-4d8f-8d7c-d13397311554)
+

@@ -5,7 +5,9 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Matching Game Code", "Matching Game Code.csproj", "{0480F5FD-21E0-41CA-885A-FC230781F6F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matching Game Maui", "..\Matching Game Maui\Matching Game Maui.csproj", "{1BEE0BB4-B3DB-463D-822E-C26448B392D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Matching Game Maui", "..\Matching Game Maui\Matching Game Maui.csproj", "{1BEE0BB4-B3DB-463D-822E-C26448B392D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matching Game Web", "..\Matching Game Web\Matching Game Web.csproj", "{CCEB77B8-2FB2-4D6B-B93B-A17D4575520C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{1BEE0BB4-B3DB-463D-822E-C26448B392D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BEE0BB4-B3DB-463D-822E-C26448B392D9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1BEE0BB4-B3DB-463D-822E-C26448B392D9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CCEB77B8-2FB2-4D6B-B93B-A17D4575520C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCEB77B8-2FB2-4D6B-B93B-A17D4575520C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCEB77B8-2FB2-4D6B-B93B-A17D4575520C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCEB77B8-2FB2-4D6B-B93B-A17D4575520C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

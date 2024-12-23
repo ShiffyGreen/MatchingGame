@@ -1,0 +1,243 @@
+﻿@page
+@model Matching_Game_Web.Pages.MatchingGameModel
+@{
+}
+<div class="container" style="margin-right: 25%; margin-left: 25%;">
+    <div class="row ">
+        <div class="col-4">
+            <button class="btn btn-primary" id="playButton" style="font-size: 23px">Play</button>
+            <label class="p-md-2  text-info" style="font-size: 23px">Player 1: <span id="player1Matches">0</span></label>
+            <label class="p-md-2 text-info" style="font-size: 23px">Player 2: <span id="player2Matches">0</span></label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <label id="turnLabel" style="display: none; font-size: 20px; padding-top: 2px;">Current Turn: Player 1</label>
+        </div>
+    </div>
+    <div class="p-2">
+        <div class="row justify-content-center">
+            <div class="col justify-content-center">
+                <button class="btn-success btn cards" id="b1"></button>
+                <button class="btn-success btn cards" id="b2"></button>
+                <button class="btn-success btn cards" id="b3"></button>
+                <button class="btn-success btn cards" id="b4"></button>
+                <button class="btn-success btn cards" id="b5"></button>
+                <button class="btn-success btn cards" id="b6"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b7"></button>
+                <button class="btn-success btn cards" id="b8"></button>
+                <button class="btn-success btn cards" id="b9"></button>
+                <button class="btn-success btn cards" id="b10"></button>
+                <button class="btn-success btn cards" id="b11"></button>
+                <button class="btn-success btn cards" id="b12"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b13"></button>
+                <button class="btn-success btn cards" id="b14"></button>
+                <button class="btn-success btn cards" id="b15"></button>
+                <button class="btn-success btn cards" id="b16"></button>
+                <button class="btn-success btn cards" id="b17"></button>
+                <button class="btn-success btn cards" id="b18"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b19"></button>
+                <button class="btn-success btn cards" id="b20"></button>
+                <button class="btn-success btn cards" id="b21"></button>
+                <button class="btn-success btn cards" id="b22"></button>
+                <button class="btn-success btn cards" id="b23"></button>
+                <button class="btn-success btn cards" id="b24"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b25"></button>
+                <button class="btn-success btn cards" id="b26"></button>
+                <button class="btn-success btn cards" id="b27"></button>
+                <button class="btn-success btn cards" id="b28"></button>
+                <button class="btn-success btn cards" id="b29"></button>
+                <button class="btn-success btn cards" id="b30"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b31"></button>
+                <button class="btn-success btn cards" id="b32"></button>
+                <button class="btn-success btn cards" id="b33"></button>
+                <button class="btn-success btn cards" id="b34"></button>
+                <button class="btn-success btn cards" id="b35"></button>
+                <button class="btn-success btn cards" id="b36"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const buttonValues = [
+        'A', 'A', 'B', 'B', 'C', 'C',
+        'D', 'D', 'E', 'E', 'F', 'F',
+        'G', 'G', 'H', 'H', 'I', 'I',
+        'J', 'J', 'K', 'K', 'L', 'L',
+        'M', 'M', 'N', 'N', 'O', 'O',
+        'P', 'P', 'Q', 'Q', 'R', 'R'
+    ];
+
+    let firstSelection = null;
+    let secondSelection = null;
+    let lockBoard = false;
+    let matchedPairs = 0;
+    let currentPlayer = 1; // Track current player
+    let player1Matches = 0; // Track Player 1 matches
+    let player2Matches = 0; // Track Player 2 matches
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function setupGame() {
+        shuffle(buttonValues);
+        const buttons = document.querySelectorAll('.cards');
+        buttons.forEach((button, index) => {
+            button.textContent = ''; // Clear button text
+            button.dataset.value = buttonValues[index]; // Store the value
+            button.disabled = false; // Enable button
+            button.style.backgroundColor = ''; // Reset background color
+            button.style.opacity = '1'; // Ensure buttons are visible
+            button.style.pointerEvents = 'auto'; // Enable interaction
+            button.classList.remove('btn-warning'); // Remove any warning class
+            button.addEventListener('click', handleButtonClick);
+        });
+        currentPlayer = 1; // Reset current player
+        updateTurnLabel(); // Show the turn label
+        document.getElementById('turnLabel').style.display = 'block'; // Show turn label
+        player1Matches = 0; // Reset Player 1 matches
+        player2Matches = 0; // Reset Player 2 matches
+        updateMatchCounts(); // Update match counts display
+    }
+
+    function handleButtonClick(event) {
+        if (lockBoard) return;
+
+        const button = event.target;
+        button.textContent = button.dataset.value; // Show value
+        button.classList.add('btn-warning'); // Change background color
+
+        if (!firstSelection) {
+            firstSelection = button;
+            return;
+        }
+
+        secondSelection = button;
+        lockBoard = true;
+
+        checkForMatch();
+    }
+
+    function checkForMatch() {
+        if (firstSelection.dataset.value === secondSelection.dataset.value) {
+            matchedPairs++;
+            if (currentPlayer === 1) {
+                player1Matches++; // Increment Player 1's match count
+            } else {
+                player2Matches++; // Increment Player 2's match count
+            }
+            updateMatchCounts(); // Update match counts display
+
+            // Change background color to red for matched buttons
+            firstSelection.style.backgroundColor = 'red';
+            secondSelection.style.backgroundColor = 'red';
+
+            // Hide matched buttons after 2 seconds while keeping their space
+            setTimeout(() => {
+                firstSelection.style.opacity = '0'; // Make first matched button invisible
+                firstSelection.style.pointerEvents = 'none'; // Disable interaction
+                secondSelection.style.opacity = '0'; // Make second matched button invisible
+                secondSelection.style.pointerEvents = 'none'; // Disable interaction
+                resetSelections(true); // Pass true to indicate a match
+
+                // Check for winner after hiding buttons
+                if (matchedPairs === buttonValues.length / 2) {
+                    if (player1Matches === player2Matches) {
+                        updateTurnLabel('It\'s a tie!');
+                    } else {
+                        let winner = player1Matches > player2Matches ? 'Player 1' : 'Player 2';
+                        updateTurnLabel(winner + ' wins with ' + Math.max(player1Matches, player2Matches) + ' matches!');
+                    }
+                }
+            }, 2000); // 2000 milliseconds = 2 seconds
+        } else {
+            setTimeout(() => {
+                firstSelection.textContent = '';
+                secondSelection.textContent = '';
+                firstSelection.classList.remove('btn-warning'); // Reset background color
+                secondSelection.classList.remove('btn-warning'); // Reset background color
+                resetSelections(false); // Pass false to indicate no match
+            }, 1000);
+        }
+    }
+
+    function resetSelections(isMatch) {
+        firstSelection = null;
+        secondSelection = null;
+        lockBoard = false;
+        if (!isMatch) {
+            currentPlayer = currentPlayer === 1 ? 2 : 1; // Switch player only if no match
+        }
+        updateTurnLabel(); // Update turn label
+    }
+
+    function updateTurnLabel(message) {
+        if (message) {
+            document.getElementById('turnLabel').textContent = message;
+        } else {
+            document.getElementById('turnLabel').textContent = 'Current Turn: Player ' + currentPlayer;
+        }
+    }
+
+    function updateMatchCounts() {
+        document.getElementById('player1Matches').textContent = player1Matches;
+        document.getElementById('player2Matches').textContent = player2Matches;
+    }
+
+    // Move the event listener setup here
+    document.getElementById('playButton').addEventListener('click', () => {
+        // Ensure the play button retains its text
+        document.getElementById('playButton').textContent = 'Play';
+        // Clear the board if the game is in progress
+        if (matchedPairs > 0) {
+            clearBoard();
+        }
+        setupGame(); // Start a new game
+    });
+
+    function clearBoard() {
+        // Reset matched pairs and player scores
+        matchedPairs = 0;
+        player1Matches = 0;
+        player2Matches = 0;
+        updateMatchCounts(); // Update match counts display
+
+        // Clear button values and styles
+        const buttons = document.querySelectorAll('.cards'); // Adjust selector as needed
+        buttons.forEach(button => {
+            button.textContent = ''; // Clear button text
+            button.style.opacity = '1'; // Make sure buttons are visible
+            button.style.pointerEvents = 'auto'; // Enable interaction
+            button.style.backgroundColor = ''; // Reset background color
+            button.classList.remove('btn-warning'); // Remove any warning class
+        });
+
+        // Reset selections
+        resetSelections(false);
+    }
+</script>

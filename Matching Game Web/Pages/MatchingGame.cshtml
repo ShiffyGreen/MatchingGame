@@ -136,7 +136,9 @@
             firstSelection = button;
             return;
         }
-
+        if (firstSelection === button) {
+            return;
+        }
         secondSelection = button;
         lockBoard = true;
 

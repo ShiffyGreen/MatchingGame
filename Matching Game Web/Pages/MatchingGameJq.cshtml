@@ -1,0 +1,266 @@
+﻿@page
+@model Matching_Game_Web.Pages.MatchingGameJqModel
+@{
+}
+<div class="container" style="margin-right: 25%; margin-left: 25%;">
+    <div class="row ">
+        <div class="col-4">
+            <button class="btn btn-primary" id="playButton" style="font-size: 23px">Play</button>
+            <label class="p-md-2  text-info" style="font-size: 23px">Player 1: <span id="player1Matches">0</span></label>
+            <label class="p-md-2 text-info" style="font-size: 23px">Player 2: <span id="player2Matches">0</span></label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <label id="turnLabel" style="display: none; font-size: 20px; padding-top: 2px;">Current Turn: Player 1</label>
+        </div>
+    </div>
+    <div class="p-2">
+        <div class="row justify-content-center">
+            <div class="col justify-content-center">
+                <button class="btn-success btn cards" id="b1"></button>
+                <button class="btn-success btn cards" id="b2"></button>
+                <button class="btn-success btn cards" id="b3"></button>
+                <button class="btn-success btn cards" id="b4"></button>
+                <button class="btn-success btn cards" id="b5"></button>
+                <button class="btn-success btn cards" id="b6"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b7"></button>
+                <button class="btn-success btn cards" id="b8"></button>
+                <button class="btn-success btn cards" id="b9"></button>
+                <button class="btn-success btn cards" id="b10"></button>
+                <button class="btn-success btn cards" id="b11"></button>
+                <button class="btn-success btn cards" id="b12"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b13"></button>
+                <button class="btn-success btn cards" id="b14"></button>
+                <button class="btn-success btn cards" id="b15"></button>
+                <button class="btn-success btn cards" id="b16"></button>
+                <button class="btn-success btn cards" id="b17"></button>
+                <button class="btn-success btn cards" id="b18"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b19"></button>
+                <button class="btn-success btn cards" id="b20"></button>
+                <button class="btn-success btn cards" id="b21"></button>
+                <button class="btn-success btn cards" id="b22"></button>
+                <button class="btn-success btn cards" id="b23"></button>
+                <button class="btn-success btn cards" id="b24"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b25"></button>
+                <button class="btn-success btn cards" id="b26"></button>
+                <button class="btn-success btn cards" id="b27"></button>
+                <button class="btn-success btn cards" id="b28"></button>
+                <button class="btn-success btn cards" id="b29"></button>
+                <button class="btn-success btn cards" id="b30"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b31"></button>
+                <button class="btn-success btn cards" id="b32"></button>
+                <button class="btn-success btn cards" id="b33"></button>
+                <button class="btn-success btn cards" id="b34"></button>
+                <button class="btn-success btn cards" id="b35"></button>
+                <button class="btn-success btn cards" id="b36"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        const buttonValues = [
+            'A', 'A', 'B', 'B', 'C', 'C',
+            'D', 'D', 'E', 'E', 'F', 'F',
+            'G', 'G', 'H', 'H', 'I', 'I',
+            'J', 'J', 'K', 'K', 'L', 'L',
+            'M', 'M', 'N', 'N', 'O', 'O',
+            'P', 'P', 'Q', 'Q', 'R', 'R'
+        ];
+
+        let firstSelection = null;
+        let secondSelection = null;
+        let lockBoard = false;
+        let matchedPairs = 0;
+        let currentPlayer = 1; // Track current player
+        let player1Matches = 0; // Track Player 1 matches
+        let player2Matches = 0; // Track Player 2 matches
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function setupGame() {
+            shuffle(buttonValues);
+            const buttons = $('.cards');
+            buttons.each(function (index) {
+                $(this).text(''); // Clear button text
+                $(this).data('value', buttonValues[index]); // Store the value
+                $(this).prop('disabled', false); // Enable button
+                $(this).css({
+                    'background-color': '', // Reset background color
+                    'opacity': '1', // Ensure buttons are visible
+                    'pointer-events': 'auto' // Enable interaction
+                });
+                $(this).removeClass('btn-warning'); // Remove any warning class
+                $(this).off('click').on('click', handleButtonClick); // Add click event listener
+            });
+            currentPlayer = 1; // Reset current player
+            updateTurnLabel(); // Show the turn label
+            $('#turnLabel').show(); // Show turn label
+            player1Matches = 0; // Reset Player 1 matches
+            player2Matches = 0; // Reset Player 2 matches
+            updateMatchCounts(); // Update match counts display
+        }
+
+        function handleButtonClick(event) {
+            if (lockBoard) return;
+
+            const button = $(event.target);
+            button.text(button.data('value')); // Show value
+            button.addClass('btn-warning'); // Change background color
+
+            if (!firstSelection) {
+                firstSelection = button;
+                return;
+            }
+
+            // Prevent the same button from being selected twice
+            if (firstSelection.is(button)) {
+                return;
+            }
+
+            secondSelection = button;
+            lockBoard = true;
+
+            checkForMatch();
+        }
+
+        function checkForMatch() {
+            if (firstSelection.data('value') === secondSelection.data('value')) {
+                matchedPairs++;
+                if (currentPlayer === 1) {
+                    player1Matches++; // Increment Player 1's match count
+                } else {
+                    player2Matches++; // Increment Player 2's match count
+                }
+                updateMatchCounts(); // Update match counts display
+
+                // Change background color to red for matched buttons
+                firstSelection.css('background-color', 'red');
+                secondSelection.css('background-color', 'red');
+
+                // Animate matched buttons to "jump off" the board
+                setTimeout(() => {
+                    firstSelection.animate({
+                        top: '-=50px',
+                        opacity: 0
+                    }, 500, function () {
+                        $(this).css('pointer-events', 'none'); // Disable interaction
+                    });
+
+                    secondSelection.animate({
+                        top: '-=50px',
+                        opacity: 0
+                    }, 500, function () {
+                        $(this).css('pointer-events', 'none'); // Disable interaction
+                        resetSelections(true); // Pass true to indicate a match
+
+                        // Check for winner after hiding buttons
+                        if (matchedPairs === buttonValues.length / 2) {
+                            if (player1Matches === player2Matches) {
+                                updateTurnLabel('It\'s a tie!');
+                            } else {
+                                let winner = player1Matches > player2Matches ? 'Player 1' : 'Player 2';
+                                updateTurnLabel(winner + ' wins with ' + Math.max(player1Matches, player2Matches) + ' matches!');
+                            }
+                        }
+                    });
+                }, 2000); // 2000 milliseconds = 2 seconds
+            } else {
+                setTimeout(() => {
+                    firstSelection.text('');
+                    secondSelection.text('');
+                    firstSelection.removeClass('btn-warning'); // Reset background color
+                    secondSelection.removeClass('btn-warning'); // Reset background color
+                    resetSelections(false); // Pass false to indicate no match
+                }, 1000);
+            }
+        }
+
+        function resetSelections(isMatch) {
+            firstSelection = null;
+            secondSelection = null;
+            lockBoard = false;
+            if (!isMatch) {
+                currentPlayer = currentPlayer === 1 ? 2 : 1; // Switch player only if no match
+            }
+            updateTurnLabel(); // Update turn label
+        }
+
+        function updateTurnLabel(message) {
+            if (message) {
+                $('#turnLabel').text(message);
+            } else {
+                $('#turnLabel').text('Current Turn: Player ' + currentPlayer);
+            }
+        }
+
+        function updateMatchCounts() {
+            $('#player1Matches').text(player1Matches);
+            $('#player2Matches').text(player2Matches);
+        }
+
+        // Move the event listener setup here
+        $('#playButton').on('click', () => {
+            // Ensure the play button retains its text
+            $('#playButton').text('Play');
+            // Clear the board if the game is in progress
+            if (matchedPairs > 0) {
+                clearBoard();
+            }
+            setupGame(); // Start a new game
+        });
+
+        function clearBoard() {
+            // Reset matched pairs and player scores
+            matchedPairs = 0;
+            player1Matches = 0;
+            player2Matches = 0;
+            updateMatchCounts(); // Update match counts display
+
+            // Clear button values and styles
+            const buttons = $('.cards'); // Adjust selector as needed
+            buttons.each(function () {
+                $(this).text(''); // Clear button text
+                $(this).css({
+                    'opacity': '1', // Make sure buttons are visible
+                    'pointer-events': 'auto', // Enable interaction
+                    'background-color': '', // Reset background color
+                    'top': '0' // Reset position
+                });
+                $(this).removeClass('btn-warning'); // Remove any warning class
+            });
+
+            // Reset selections
+            resetSelections(false);
+        }
+    </script>
+}
+

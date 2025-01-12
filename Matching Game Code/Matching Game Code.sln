@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Matching Game Code", "Match
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Matching Game Maui", "..\Matching Game Maui\Matching Game Maui.csproj", "{1BEE0BB4-B3DB-463D-822E-C26448B392D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matching Game Web", "..\Matching Game Web\Matching Game Web.csproj", "{CCEB77B8-2FB2-4D6B-B93B-A17D4575520C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Matching Game Web", "..\Matching Game Web\Matching Game Web.csproj", "{CCEB77B8-2FB2-4D6B-B93B-A17D4575520C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

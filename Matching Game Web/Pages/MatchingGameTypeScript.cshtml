@@ -1,0 +1,84 @@
+﻿@page
+@model Matching_Game_Web.Pages.MatchingGameTypeScriptModel
+@{
+}
+
+<div class="container" style="margin-right: 25%; margin-left: 25%;">
+    <div class="row ">
+        <div class="col-4">
+            <button class="btn btn-primary" id="playButton" style="font-size: 23px">Play</button>
+            <label class="p-md-2  text-info" style="font-size: 23px">Player 1: <span id="player1Matches">0</span></label>
+            <label class="p-md-2 text-info" style="font-size: 23px">Player 2: <span id="player2Matches">0</span></label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <label id="turnLabel" style="display: none; font-size: 20px; padding-top: 2px;">Current Turn: Player 1</label>
+        </div>
+    </div>
+    <div class="p-2">
+        <div class="row justify-content-center">
+            <div class="col justify-content-center">
+                <button class="btn-success btn cards" id="b1"></button>
+                <button class="btn-success btn cards" id="b2"></button>
+                <button class="btn-success btn cards" id="b3"></button>
+                <button class="btn-success btn cards" id="b4"></button>
+                <button class="btn-success btn cards" id="b5"></button>
+                <button class="btn-success btn cards" id="b6"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b7"></button>
+                <button class="btn-success btn cards" id="b8"></button>
+                <button class="btn-success btn cards" id="b9"></button>
+                <button class="btn-success btn cards" id="b10"></button>
+                <button class="btn-success btn cards" id="b11"></button>
+                <button class="btn-success btn cards" id="b12"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b13"></button>
+                <button class="btn-success btn cards" id="b14"></button>
+                <button class="btn-success btn cards" id="b15"></button>
+                <button class="btn-success btn cards" id="b16"></button>
+                <button class="btn-success btn cards" id="b17"></button>
+                <button class="btn-success btn cards" id="b18"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b19"></button>
+                <button class="btn-success btn cards" id="b20"></button>
+                <button class="btn-success btn cards" id="b21"></button>
+                <button class="btn-success btn cards" id="b22"></button>
+                <button class="btn-success btn cards" id="b23"></button>
+                <button class="btn-success btn cards" id="b24"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b25"></button>
+                <button class="btn-success btn cards" id="b26"></button>
+                <button class="btn-success btn cards" id="b27"></button>
+                <button class="btn-success btn cards" id="b28"></button>
+                <button class="btn-success btn cards" id="b29"></button>
+                <button class="btn-success btn cards" id="b30"></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn-success btn cards" id="b31"></button>
+                <button class="btn-success btn cards" id="b32"></button>
+                <button class="btn-success btn cards" id="b33"></button>
+                <button class="btn-success btn cards" id="b34"></button>
+                <button class="btn-success btn cards" id="b35"></button>
+                <button class="btn-success btn cards" id="b36"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/MatchingGameTypeScript.js" asp-append-version="true">
+</script>

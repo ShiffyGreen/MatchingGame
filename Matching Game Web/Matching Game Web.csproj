@@ -7,4 +7,19 @@
     <RootNamespace>Matching_Game_Web</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="ts\MatchingGameTypeScript.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.7.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ts\MatchingGameTypeScript.ts" />
+  </ItemGroup>
+
 </Project>
